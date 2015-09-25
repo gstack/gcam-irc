@@ -41,7 +41,7 @@ settings = {
     {
       server: 'irc.rizon.net',
       nick: 'guest',
-      channels: ['#code']
+      channels: ['#island55']
     }
   ]
 };
