@@ -2,7 +2,8 @@ var _ = typeof _ !== 'undefined' ? _ : require("underscore");
 var util = typeof util !== 'undefined' ? util : {};
 var EventEmitter = require('events').EventEmitter;
 
-window.gcamEvents = new EventEmitter();
+var g = window || global;
+g.gcamEvents = new EventEmitter();
 
 util.handle_irc = function(message, irc, app_ref) {
   var app = typeof window !== 'undefined' ? window.app : app_ref;
