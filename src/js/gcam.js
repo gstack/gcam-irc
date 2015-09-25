@@ -45,11 +45,11 @@ gcam.processCommand = function(obj) {
 //  gcam.sendCommand(gcam.getActiveCamsChannel(), {});
   if (obj.command == "ping:cams")
   {
-    if (gcam.getActiveCamsChannel().indexOf(obj.channel) != -1)
-    {
+  //  if (gcam.getActiveCamsChannel().indexOf(obj.channel) != -1)
+  //  {
       gcam.sendCamUpdate();
       //gcam.sendCommand(gcam.getActiveCamsChannel(), { "command": "pong:cams", "channel": gcam.getActiveChannel(), "broadcasting": gcam.currentlyBroadcasting, "stream": gcam.activeStream });
-    }
+    //}
   } else if (obj.command == "cams") {
     // cam slot manager needs work on this.
     console.dir(obj);
@@ -62,6 +62,7 @@ gcam.processCommand = function(obj) {
 
 gcam.sendCamUpdate = function() {
   gcam.sendCommand(gcam.getActiveCamsChannel(), { "command": "cams", "nick": gcam.getActiveNick(), "channel": gcam.getActiveChannel(), "broadcasting": gcam.currentlyBroadcasting, "stream": gcam.activeStream });
+  console.log('sent cam update');
 }
 
 gcam.processMessage = function(data) {
@@ -131,7 +132,7 @@ gcam.cams_channel = {
     console.log('gcam started broadcasting on '+gcam.currentChannel);
     gcam.sendCamUpdate();
       
-    window.gcamEvents.emit('startedbroadcasting', {stream: this.streamName});
+    window.gcamEvents.emit('startedbroadcasting', {stream: streamName});
   }
 };
 
@@ -175,6 +176,8 @@ gcam.hello = function(gid)
 };
 
 (function(gcam){
+
+  // THIS needs some kind of idle timeout to broadcast its closed status in the event of swf being unloaded.
 
 	// active management for all cam slots (publish, stop, global mute, add 1, etc) -- hooks into gcam.ui for layout
 	var CamSlotManager = function()
