@@ -68,6 +68,14 @@ gcam.sendCamUpdate = function() {
   console.log('sent cam update');
 }
 
+gcam.netstatus = function(stream, code)
+{
+  console.log('gcam netstatus: '+stream+": "+code);
+  if (code == "NetStream.Play.UnpublishNotify") {
+    gcam.camslots.remove(_.where(gcam.activeCams, {stream: stream})[0]);
+  }
+}
+
 gcam.processMessage = function(data) {
   if (data.text[0] == "{")
   {
