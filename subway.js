@@ -76,6 +76,10 @@ async.waterfall([
             .use(express.urlencoded())
             .use(express.cookieParser(server_settings.cookie_secret || "subway_secret"))
             .use(express.static(cwd + "/tmp"));
+  
+  app.get('/crossdomain.xml', function(req, res){
+    res.sendfile(cwd +'/crossdomain.xml');
+  });
 
   app.configure(function() {
     app.set("views", __dirname + "/tmp");
