@@ -90,7 +90,14 @@ util.handle_irc = function(message, irc, app_ref) {
       // The first argument is the name of the channel
       if(message.nick === app.irc.getActiveNick()) {
         server.addChannel(message.args[0]);
-        app.irc.set("active_channel", message.args[0]);
+        if (message.args[0].indexOf("-gcam") == -1)
+        {
+          app.irc.set("active_channel", message.args[0]);
+        } else {
+          app.io.emit("command", {server: "irc.rizon.net", command: "join "+message.args[0]+"-gcam"});
+          console.log('joining cams channel:'+message.args[0]+"-gcam");
+        }
+          
         conn.trigger("sort");
       } else {
         server.addMessage(message.args[0], {type: "JOIN", nick: message.nick});
