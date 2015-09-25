@@ -10,6 +10,7 @@ gcam.ui.masonry.update = function() {
 gcam.SETTINGS_DISABLED = false;
 
 gcam.currentUsername = "gray";
+gcam.currentChannel = "";
 
 gcam.CAM_SIZES = [
         [160, 165],
@@ -20,11 +21,16 @@ gcam.CAM_SIZES = [
 ];
 
 gcam.addEventListeners = function() {
-  window.gcamEvents.addListener('adduser', function(data) { console.log('adduser'); console.dir(data); }); 
-  window.gcamEvents.addListener('removeuser', function(data) { console.log('removeuser'); console.dir(data); }); 
-  window.gcamEvents.addListener('msg', function(data) { console.log('msg'); console.dir(data); });
-  window.gcamEvents.addListener('stoppedbroadcasting', function(data) { console.log('stoppedbroadcasting'); console.dir(data); });
-  window.gcamEvents.addListener('startedbroadcasting', function(data) { console.log('startedbroadcasting'); console.dir(data); });
+  /* IRC Events */
+  window.gcamEvents.addListener('adduser', function(data) { console.log('g:adduser'); console.dir(data); }); 
+  window.gcamEvents.addListener('removeuser', function(data) { console.log('g:removeuser'); console.dir(data); }); 
+  window.gcamEvents.addListener('msg', function(data) { console.log('g:msg'); console.dir(data); });
+  window.gcamEvents.addListener('setactive', function(data) { console.log('g:setactive'); console.dir(data); });
+  window.gcamEvents.addListener('stoppedbroadcasting', function(data) { console.log('g:stoppedbroadcasting'); console.dir(data); });
+  window.gcamEvents.addListener('startedbroadcasting', function(data) { console.log('g:startedbroadcasting'); console.dir(data); });
+  
+  /* Post-parse Events */
+  
   console.log('added gcam video chat event listeners');
 }
 

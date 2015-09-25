@@ -123,6 +123,11 @@ app.components.irc = function() {
             active_channel: new_channel
           })
         }
+        
+        window.gcamEvents.emit('setactive', {
+          active_server: new_server,
+          active_channel: new_channel
+        });
 
         // If the our menu is not hidden we hide it now
         $(".mainMenu").addClass("hide");
