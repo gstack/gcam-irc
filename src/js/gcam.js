@@ -39,6 +39,11 @@ gcam.getActiveCamsChannel = function() {
   return app.irc.getActiveChannel().id+"-gcam";
 }
 
+gcam.startStreaming = function() {
+  if (gcam.getActiveChannel().indexOf("#") != -1)
+    gcam.camslots.startStream();
+}
+
 gcam.openStreams = [];
 
 gcam.processCommand = function(obj) {
@@ -315,7 +320,7 @@ gcam.hello = function(gid)
 
 		if (selector == null)
 		{
-			this.el = $("<div id='cambox_"+this.id+"' class='videobox'><div class='titlebar'><span><strong>"+this.username+"</span></strong><div class='videocontrols'><i class='settings'></i></div></div><div class='videobox-flash'></div></div>");
+			this.el = $("<div id='cambox_"+this.id+"' class='videobox'><div class='titlebar'><span><strong>"+this.username+"</span></strong><div class='videocontrols'><i class='cross'></i><i class='settings'></i></div></div><div class='videobox-flash'></div></div>");
 			$(".videocams").append(this.el);
 		}
 		else
@@ -421,3 +426,12 @@ gcam.hello = function(gid)
 	g.GcamSwf = GcamSwf;
 
 })(window);
+
+$(function(){
+  $("button.startStreaming").click(function() { gcam.startStreaming(); });
+  $("i.cross").click(function(){
+    var stream = $(this).parent().parent().attr('id').split("_")[1];
+    console.log('closing stream: '+stream);
+    gcam.camslots.remove(_.where(gcam.activeCams, {stream: stream})[0]);
+  });
+});
