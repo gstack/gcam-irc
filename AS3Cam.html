@@ -1,0 +1,68 @@
+<html><head>
+        <title>adobe and firefox suck</title> 
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        
+        <style type="text/css">
+        	
+        	object
+        	{
+        		position: absolute;
+        		top: 30px;
+        		left: 30px;
+        		width: 500px;
+        		height: 350px;
+        	}
+        
+        </style>
+        
+        <script type="text/javascript" src="swfobject.js"></script>
+        <script type="text/javascript">
+            // For version detection, set to min. required Flash Player version, or 0 (or 0.0.0), for no version detection. 
+            var swfVersionStr = "11.4.0";
+            // To use express install, set to playerProductInstall.swf, otherwise the empty string. 
+            var xiSwfUrlStr = "playerProductInstall.swf";
+            var flashvars = {};
+            var params = {
+            	"wmode": "direct"
+            };
+            params.quality = "high";
+            params.bgcolor = "#ffffff";
+            params.allowscriptaccess = "always";
+            params.allowfullscreen = "true";
+            var attributes = {};
+            attributes.id = "AS3Cam";
+            attributes.name = "AS3Cam";
+            attributes.align = "middle";
+            swfobject.embedSWF(
+                "AS3Cam.swf", "flashContent", 
+                "100%", "100%", 
+                swfVersionStr, xiSwfUrlStr, 
+                flashvars, params, attributes);
+                
+            // JavaScript enabled so display the flashContent div in case it is not replaced with a swf object.
+            swfobject.createCSS("#flashContent", "display:block;text-align:left;");
+        </script><style media="screen" type="text/css">#flashContent {visibility:hidden}#flashContent {display:block;text-align:left;}</style>
+    </head>
+    <body>
+        <object data="AS3Cam.swf" name="AS3Cam" id="AS3Cam" type="application/x-shockwave-flash" align="middle" width="100%" height="100%"><param value="direct" name="wmode"><param value="high" name="quality"><param value="#ffffff" name="bgcolor"><param value="always" name="allowscriptaccess"><param value="true" name="allowfullscreen"></object>
+        
+        <noscript>
+            <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="100%" height="100%" id="AS3Cam">
+                <param name="movie" value="AS3Cam.swf" />
+                <param name="quality" value="high" />
+                <param name="bgcolor" value="#ffffff" />
+                <param name="allowScriptAccess" value="always" />
+                <param name="allowFullScreen" value="true" />
+                <param name="wmode" value="direct" />
+                <object type="application/x-shockwave-flash" data="AS3Cam.swf" width="100%" height="100%">
+                    <param name="quality" value="high" />
+                    <param name="bgcolor" value="#ffffff" />
+                    <param name="allowScriptAccess" value="always" />
+                    <param name="wmode" value="direct" />
+                    <param name="allowFullScreen" value="true" />
+                </object>
+            </object>
+        </noscript>     
+   
+
+</body></html>
