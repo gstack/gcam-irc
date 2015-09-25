@@ -4,6 +4,8 @@ app.components.irc = function() {
   var Messages = app.components.messages();
   var UserList = app.components.user_list();
   var MessageInput = app.components.message_input();
+  var VideoCams = app.components.video_cams().VideoCams;
+  var CamSlot = app.components.video_cams().CamSlot;
 
   var TitleBar = React.createBackboneClass({
     render: function() {

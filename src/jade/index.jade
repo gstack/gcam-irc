@@ -3,7 +3,7 @@ html
   head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
-    title Subway IRC client
+    title gcam chat irc
     meta(name='description', content='The Subway IRC client')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     link(href="//fonts.googleapis.com/css?family=Open+Sans:400italic,400,300,600,700,800" rel="stylesheet" type="text/css")
@@ -11,14 +11,17 @@ html
       link(rel="stylesheet", href="#{file}")
 
   body
-    .mainMenu
-    .container
+    .mainMenu.menuLeft
+    .videocams.visible
+      .videobox
+        .titlebar
+          span
+            strong mofukka
+          .videocontrols
+            i.settings
+        .videobox-flash
+    .container.videochat
       nav
-        .text-center
-          img(src="/img/subway.png")
-          h1 Subway
-            br
-            small IRC Client
         .nav-area
       main
     each file in js_output

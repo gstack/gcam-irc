@@ -17,13 +17,24 @@ main, .app
   display: flex
   padding: 10px
   color: white
-  background: #434950
+  background: #000000
+  box-sizing: content-box!important
 
   strong
     margin-right: 10px
 
   span
     flex: 1
+    max-height: 19px
+    
+i.settings
+  width: 17px
+  height: 17px
+  background: url('img/gear.svg')
+  display: block
+  -webkit-filter: hue-rotate(180deg)
+  color: #fff
+  background-color: #fff
 
 .messageInput
   display: -webkit-flex

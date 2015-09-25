@@ -239,8 +239,8 @@ util.sounds = {
 // Check if the browser supports notifications
 if ("Notification" in window) {
   // build title and body for the notification saying subway has notifications
-  var title = 'Notifications from Subway';
-  var body = 'Subway will display notifications like this for this session';
+  var title = 'gcam.co';
+  var body = 'IRC Notifications will be displayed like this for this session.';
 
   // We display a notification saying that subway will use notifications.
   // On Chrome this is also a way of requesting permission to display notifications.
