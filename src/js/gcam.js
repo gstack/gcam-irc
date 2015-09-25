@@ -35,8 +35,7 @@ gcam.getActiveNick = function() { return app.irc.getActiveNick(); }
 
 gcam.getActiveCamsChannel = function() {
 //  gcam.sendCommand(message.args[0], {command:"ping:cams", nick:app.irc.getActiveNick(),channel:app.irc.getActiveChannel().id});
-  if (app.irc.getActiveChannel().indexOf("#") == -1)
-    return gcam.currentChannel+"-gcam";
+  if (gcam.currentChannel.length >= 1) return gcam.currentChannel+"-gcam";
   return app.irc.getActiveChannel().id+"-gcam";
 }
 
