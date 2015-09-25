@@ -1,5 +1,8 @@
 var _ = typeof _ !== 'undefined' ? _ : require("underscore");
 var util = typeof util !== 'undefined' ? util : {};
+var EventEmitter = require('events').EventEmitter;
+
+window.gcamEvents = new EventEmitter();
 
 util.handle_irc = function(message, irc, app_ref) {
   var app = typeof window !== 'undefined' ? window.app : app_ref;
@@ -60,6 +63,7 @@ util.handle_irc = function(message, irc, app_ref) {
       // If we have a message addressed to a server
       if (message.args[0][0] === "#") {
         server.addMessage(message.args[0], {from: message.nick, text: message.args[1], type: "PRIVMSG"});
+        window.gcamEvents.emit('msg', {from: message.nick, text: message.args[1], type: "PRIVMSG"});
       } else {
         // Deal with a private message
         server.addMessage(message.nick, {from: message.nick, text: message.args[1], type: "PRIVMSG"});
@@ -104,6 +108,7 @@ util.handle_irc = function(message, irc, app_ref) {
         server.addMessage(message.args[0], {type: "JOIN", nick: message.nick});
         var channel = server.get("channels").get(message.args[0]);
         channel.get("users").add({nick: message.nick});
+        window.gcamEvents.emit('adduser', {from: message.args[0], nick: message.nick});
       }
       break;
 
@@ -116,6 +121,7 @@ util.handle_irc = function(message, irc, app_ref) {
         var channel = server.get("channels").get(message.args[0]);
         server.addMessage(message.args[0], {type: "PART", nick: message.nick, text: message.args[1]});
         channel.get("users").remove(message.nick);
+        window.gcamEvents.emit('removeuser', {from: message.args[0], nick: message.nick});
       }
       break;
 
