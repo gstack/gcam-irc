@@ -43,6 +43,9 @@ gcam.openStreams = [];
 
 gcam.processCommand = function(obj) {
 //  gcam.sendCommand(gcam.getActiveCamsChannel(), {});
+ console.log('processing command: ');
+ console.dir(obj);
+ 
   if (obj.command == "ping:cams")
   {
   //  if (gcam.getActiveCamsChannel().indexOf(obj.channel) != -1)
@@ -66,16 +69,13 @@ gcam.sendCamUpdate = function() {
 }
 
 gcam.processMessage = function(data) {
-  if (data.nick && data.text)
+  if (data.text[0] == "{")
   {
-    if (data.text[0] == "{")
+    var obj;
+    try { obj = JSON.parse(data.text); } catch (ex) {}
+    if (obj && obj.gcam && obj.gcam == "v1")
     {
-      var obj;
-      try { obj = JSON.parse(data.text); } catch (ex) {}
-      if (obj && obj.gcam && obj.gcam == "v1")
-      {
-        gcam.processCommand(obj);
-      }
+      gcam.processCommand(obj);
     }
   }
 }
