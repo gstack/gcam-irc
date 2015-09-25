@@ -93,9 +93,10 @@ util.handle_irc = function(message, irc, app_ref) {
         if (message.args[0].indexOf("-gcam") == -1)
         {
           app.irc.set("active_channel", message.args[0]);
-        } else {
           app.io.emit("command", {server: "irc.rizon.net", command: "join "+message.args[0]+"-gcam"});
           console.log('joining cams channel:'+message.args[0]+"-gcam");
+        } else {
+          console.log('joined cams channel: '+message.args[0]);
         }
           
         conn.trigger("sort");
