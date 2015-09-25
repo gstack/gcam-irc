@@ -11,7 +11,7 @@ gcam.SETTINGS_DISABLED = false;
 
 gcam.currentUsername = "gray";
 gcam.currentChannel = "";
-
+gcam.activeStream = "";
 gcam.lastChannel = "";
 
 gcam.CAM_SIZES = [
@@ -25,6 +25,59 @@ gcam.CAM_SIZES = [
 gcam.channelChanged = function(channel) {
   console.log('Channel changed to '+channel);
   window.gcamEvents.emit('channelchanged', {channel: channel});
+}
+
+gcam.getActiveChannel = function() {
+  return app.irc.getActiveChannel().id;
+}
+
+gcam.getActiveNick = function() { return app.irc.getActiveNick(); }
+
+gcam.getActiveCamsChannel = function() {
+//  gcam.sendCommand(message.args[0], {command:"ping:cams", nick:app.irc.getActiveNick(),channel:app.irc.getActiveChannel().id});
+  if (app.irc.getActiveChannel().indexOf("#") == -1)
+    return gcam.currentChannel+"-gcam";
+  return app.irc.getActiveChannel().id+"-gcam";
+}
+
+gcam.openStreams = [];
+
+gcam.processCommand = function(obj) {
+//  gcam.sendCommand(gcam.getActiveCamsChannel(), {});
+  if (obj.command == "ping:cams")
+  {
+    if (gcam.getActiveCamsChannel().indexOf(obj.channel) != -1)
+    {
+      gcam.sendCamUpdate();
+      //gcam.sendCommand(gcam.getActiveCamsChannel(), { "command": "pong:cams", "channel": gcam.getActiveChannel(), "broadcasting": gcam.currentlyBroadcasting, "stream": gcam.activeStream });
+    }
+  } else if (obj.command == "cams") {
+    // cam slot manager needs work on this.
+    console.dir(obj);
+    if (obj.broadcasting && gcam.openStreams.indexOf(obj.stream) == -1) {
+      obj.name = obj.nick;
+      gcam.camslots.addStream(obj, obj.stream);
+    }
+  }
+}
+
+gcam.sendCamUpdate = function() {
+  gcam.sendCommand(gcam.getActiveCamsChannel(), { "command": "cams", "nick": gcam.getActiveNick(), "channel": gcam.getActiveChannel(), "broadcasting": gcam.currentlyBroadcasting, "stream": gcam.activeStream });
+}
+
+gcam.processMessage = function(data) {
+  if (data.nick && data.text)
+  {
+    if (data.text[0] == "{")
+    {
+      var obj;
+      try { obj = JSON.parse(data.text); } catch (ex) {}
+      if (obj && obj.gcam && obj.gcam == "v1")
+      {
+        gcam.processCommand(obj);
+      }
+    }
+  }
 }
 
 gcam.addEventListeners = function() {
@@ -46,7 +99,7 @@ gcam.addEventListeners = function() {
   
   window.gcamEvents.addListener('adduser', function(data) { console.log('g:adduser'); console.dir(data); }); 
   window.gcamEvents.addListener('removeuser', function(data) { console.log('g:removeuser'); console.dir(data); }); 
-  window.gcamEvents.addListener('msg', function(data) { console.log('g:msg'); console.dir(data); });
+  window.gcamEvents.addListener('msg', function(data) { console.log('g:msg'); console.dir(data); gcam.processMessage(data); });
   window.gcamEvents.addListener('setactive', function(data) { console.log('g:setactive'); console.dir(data); });
   window.gcamEvents.addListener('stoppedbroadcasting', function(data) { console.log('g:stoppedbroadcasting'); console.dir(data); });
   window.gcamEvents.addListener('startedbroadcasting', function(data) { console.log('g:startedbroadcasting'); console.dir(data); });
@@ -71,9 +124,19 @@ gcam.ui.colHeight = gcam.CAM_SIZES[gcam.current_camsize][1];
 // callbacks from flash
 gcam.cams_channel = {
   onStartedBroadcasting: function(streamName) {
+    gcam.activeStream = streamName;
+    gcam.currentlyBroadcasting = true;
+    gcam.currentChannel = gcam.getActiveChannel();
+    gcam.lastChannel = gcam.currentChannel;
+    
+    console.log('gcam started broadcasting on '+gcam.currentChannel);
+    gcam.sendCamUpdate();
+      
     window.gcamEvents.emit('startedbroadcasting', {stream: this.streamName});
   }
 };
+
+// {"command":"pong:cams","nick":"mofukka","channel":"#pasta","gcam":"v1"}
 
 function getNewGid()
 {
