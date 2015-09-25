@@ -317,7 +317,7 @@ gcam.hello = function(gid)
 		attributes.id = "AS3Cam_"+id;
 		attributes.name = "AS3Cam_"+id;
 		attributes.align = "middle";
-		swfobject.embedSWF("//gcam.chat/assets/AS3Cam.swf", this.container, "100%", "100%", swfVersionStr, xiSwfUrlStr, flashvars, params, attributes);
+		swfobject.embedSWF("/assets/AS3Cam.swf", this.container, "100%", "100%", swfVersionStr, xiSwfUrlStr, flashvars, params, attributes);
 		swfobject.createCSS("#"+this.container, "display:block;text-align:left;");
 	}
 
