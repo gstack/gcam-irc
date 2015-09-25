@@ -70,7 +70,7 @@ util.handle_irc = function(message, irc, app_ref) {
       // If we have a message addressed to a server
       if (message.args[0][0] === "#") {
         server.addMessage(message.args[0], {from: message.nick, text: message.args[1], type: "PRIVMSG"});
-        if (typeof window !== 'undefined') { window.gcamEvents.emit('msg', {from: message.nick, text: message.args[1], type: "PRIVMSG"}); }
+        if (typeof window !== 'undefined') { window.gcamEvents.emit('msg', {channel: message.args[0], from: message.nick, text: message.args[1], type: "PRIVMSG"}); }
       } else {
         // Deal with a private message
         server.addMessage(message.nick, {from: message.nick, text: message.args[1], type: "PRIVMSG"});
@@ -104,12 +104,14 @@ util.handle_irc = function(message, irc, app_ref) {
         if (message.args[0].indexOf("-gcam") == -1)
         {
           app.irc.set("active_channel", message.args[0]);
+          window.gcamEvents.emit('update');
           app.io.emit("command", {server: "irc.rizon.net", command: "join "+message.args[0]+"-gcam"});
           console.log('joining cams channel:'+message.args[0]+"-gcam");
         } else {
           console.log('joined cams channel: '+message.args[0]);
           if (typeof window !== 'undefined') {
-            gcam.sendCommand(message.args[0], {command:"ping:cams"});
+            gcam.sendCommand(message.args[0], {command:"ping:cams", nick:app.irc.getActiveNick(),channel:app.irc.getActiveChannel().id});
+            window.gcamEvents.emit('update');
           }
         }
           

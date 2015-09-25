@@ -12,6 +12,8 @@ gcam.SETTINGS_DISABLED = false;
 gcam.currentUsername = "gray";
 gcam.currentChannel = "";
 
+gcam.lastChannel = "";
+
 gcam.CAM_SIZES = [
         [160, 165],
         [280,240],
@@ -20,8 +22,28 @@ gcam.CAM_SIZES = [
         [180, 140]
 ];
 
+gcam.channelChanged = function(channel) {
+  console.log('Channel changed to '+channel);
+  window.gcamEvents.emit('channelchanged', {channel: channel});
+}
+
 gcam.addEventListeners = function() {
   /* IRC Events */
+  
+  // update the currently active channel check. called by interval and irc internal
+  window.gcamEvents.addListener('update', function() { 
+    gcam.currentUsername = app.irc.getActiveNick(); 
+    if (app.irc.getActiveChannel()) 
+      gcam.currentChannel = app.irc.getActiveChannel().id;
+    if (gcam.currentChannel != gcam.lastChannel) {
+      if (gcam.currentChannel.indexOf("#") != -1)
+      {
+        gcam.lastChannel = gcam.currentChannel;
+        gcam.channelChanged(gcam.currentChannel);
+      }
+    }
+  });
+  
   window.gcamEvents.addListener('adduser', function(data) { console.log('g:adduser'); console.dir(data); }); 
   window.gcamEvents.addListener('removeuser', function(data) { console.log('g:removeuser'); console.dir(data); }); 
   window.gcamEvents.addListener('msg', function(data) { console.log('g:msg'); console.dir(data); });
@@ -33,6 +55,8 @@ gcam.addEventListeners = function() {
   
   console.log('added gcam video chat event listeners');
 }
+
+setInterval(function() { window.gcamEvents.emit('update'); }, 1000);
 
 // called when height is updated to generate nice looking cams
 function regenCamSizes(){
@@ -246,7 +270,7 @@ gcam.hello = function(gid)
 	GcamSwf.prototype.menuCallback = function()
 	{
 		console.log('cambox '+this.username+' menu callback..');
-		gcam.ui.showCamboxMenu($("#cambox_"+this.id).find('.videocontrols'));
+		//gcam.ui.showCamboxMenu($("#cambox_"+this.id).find('.videocontrols'));
 	}
 
 	GcamSwf.prototype.refresh = function()
