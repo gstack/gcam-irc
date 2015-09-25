@@ -37,15 +37,13 @@ settings = {
   // Default servers
   // list default servers which you want the users 
   // to connect to on startup
-  /*
   default_servers: [
     {
-      server: 'localhost',
+      server: 'irc.rizon.net',
       nick: 'guest',
-      channels: ['#test_metro']
+      channels: ['#code']
     }
   ]
- */
 };
 
 
